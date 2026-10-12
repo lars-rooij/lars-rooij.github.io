@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEdeRooij</title>
+    <link rel="icon" type="image/x-icon" href="/imgs/icon2.jpg">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="layout-wrapper">
+        <div class="layout">
+            <header class="header">
+                <button class="header-button header-button-left" type="button" onclick="goToRandomAssignment()">
+                    <span class="header-button-arrow">?? </span>
+                    <span class="header-button-title">Random</span>
+                </button>
+
+                <div class="header-center">
+                    <h1>LE de Rooij CrI&T Portfolio</h1>
+                </div>
+
+                <button class="header-button header-button-right" type="button" onclick="location.href='search.html'">
+                    <span class="header-button-arrow">&gt;&gt;</span>
+                    <span class="header-button-title">All Pages</span>
+                </button>
+            </header>
+
+            <section class="columns" style="grid-template-columns: repeat(3, 1fr)">
+                <article class="column">
+                    <h2>Welcome ^-^</h2>
+                    <p>
+                        Hii this is my portfolio website =w=b 
+                    </p>
+                    <p>I'm LE de Rooij, as stated above. He/They. 22. Depite how it may look my favourite colour is yellow⭐⭐⭐
+                    </p>
+                    <p>
+                        This website features works by me, made for the courses of <a href="https://studiegids.universiteitleiden.nl/studies/MA-CRIT?year=2261&tab=study-structure&mainTab=Master&type=Ma&qualificationType=15">Leiden Universities' Creative Intelligence & Technology Master</a>! fun stuff!  
+                    </p>
+                    <p>
+                        I have my bachelor in Data Science & AI, also hosted at Leiden University. My thesis, on how changning the colour of art affect its recognition by Visision Transformers, is <a href="https://theses.liacs.nl/pdf/2025-2026-RooijLdeLars.pdf">here</a>.
+                    </p>
+                    <p>I made this website, with use of a template by <a href="https://serenitysrest.neocities.org/">serenity's rest</a>, and AI collaboration.</p>
+                    <small>ft. my bunny wabbit that I have deemed as my CrI&T mascot. Bought in Linz on our first trip.</small>
+
+
+                </article>
+
+                <article class="column">
+                    <img src="../imgs/icon.jpg" alt="a yellow bunny dogtoy held up against a city backdrop across a river">
+
+                </article>
+
+            </section>
+
+        </div>
+
+        <aside class="floating-panel">
+            <div class="search-box">
+                <form action="search.html" method="get">
+                    <input type="search" name="q" placeholder="Search..." aria-label="Search">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropdown-toggle" type="button" aria-expanded="false">
+                    <span>Quick Links</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+
+                <div class="dropdown-content" id="quick-links"></div>
+            </div>
+        </aside>
+    </main>
+
+    <script src="search.js"></script>
+    <script src="main.js"></script>
+
+</body>
+</html>

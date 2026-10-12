@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Sculpture Viewer</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --lightest-color: #f1faee;
+      --middle-color-one: #a8dadc;
+      --middle-color-two: #457b9d;
+      --darkest-color: #1d3557;
+
+      font-size: large;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background:
+        url("imgs/background.jpg")
+        center / cover no-repeat fixed;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      font-family: "Share Tech Mono", monospace;
+      color: var(--darkest-color);
+      background: transparent;
+      overflow: hidden;
+    }
+
+    /* Full-screen 3D viewer */
+
+    #viewer {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: transparent;
+    }
+
+    #viewer canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      outline: none;
+    }
+
+    /* Header panel */
+
+    header {
+      position: fixed;
+      top: 1.5vw;
+      left: 2.5vw;
+      width: 71vw;
+      min-height: 6vw;
+      padding: 1.5vw 2vw;
+
+      display: flex;
+      align-items: center;
+
+      background-color: var(--lightest-color);
+      border-radius: 10px;
+      box-shadow:
+        0 0 0 1px var(--middle-color-two),
+        7px 7px var(--darkest-color);
+
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    h1 {
+      width: 100%;
+      margin: 0;
+      font-size: clamp(18px, 2vw, 28px);
+      font-weight: normal;
+      line-height: 1.3;
+      letter-spacing: 0.14em;
+      text-align: center;
+      text-transform: uppercase;
+      overflow-wrap: anywhere;
+      text-shadow: 0 0 1px var(--darkest-color);
+    }
+
+    p {
+      color: var(--darkest-color);
+      text-shadow: 0 0 1px var(--darkest-color);
+    }
+
+    /* Reset button */
+
+    button {
+      position: fixed;
+      top: 1.5vw;
+      right: 2.5vw;
+      z-index: 101;
+
+      min-height: 6vw;
+      min-width: 22.5vw;
+      padding: 12px 20px;
+
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--darkest-color);
+
+      background-color: var(--middle-color-one);
+      border: 1px solid var(--middle-color-two);
+      border-radius: 10px;
+      box-shadow:
+        0 0 0 1px var(--middle-color-two),
+        7px 7px var(--darkest-color);
+
+      cursor: pointer;
+      transition:
+        color 0.1s ease,
+        background-color 0.1s ease,
+        transform 0.1s ease;
+    }
+
+    button:hover {
+      color: var(--lightest-color);
+      background-color: var(--middle-color-two);
+      transform: translate(-2px, -2px);
+    }
+
+    button:active {
+      transform: translate(2px, 2px);
+      box-shadow:
+        0 0 0 1px var(--middle-color-two),
+        3px 3px var(--darkest-color);
+    }
+
+    button:focus-visible {
+      outline: 3px solid var(--darkest-color);
+      outline-offset: 4px;
+    }
+
+    /* Viewer status panel */
+
+    #status {
+      position: fixed;
+      bottom: 2vw;
+      left: 2.5vw;
+      z-index: 100;
+
+      max-width: min(650px, 90vw);
+      padding: 15px 20px;
+
+      color: var(--darkest-color);
+      font-size: 14px;
+      line-height: 1.5;
+
+      background-color: var(--middle-color-one);
+      border-radius: 10px;
+      box-shadow:
+        0 0 0 1px var(--middle-color-two),
+        7px 7px var(--darkest-color);
+
+      overflow-wrap: anywhere;
+      pointer-events: none;
+    }
+
+    /* Responsive layout */
+
+    @media (max-width: 700px) {
+      header {
+        top: 15px;
+        left: 15px;
+        width: calc(100% - 30px);
+        min-height: 64px;
+        padding: 12px 16px;
+      }
+
+      h1 {
+        padding-right: 110px;
+        font-size: clamp(15px, 4vw, 22px);
+        letter-spacing: 0.08em;
+        text-align: left;
+      }
+
+      button {
+        top: 15px;
+        right: 15px;
+        min-width: 0;
+        min-height: 64px;
+        max-width: 125px;
+        padding: 10px 12px;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      #status {
+        bottom: 18px;
+        left: 15px;
+        max-width: calc(100% - 30px);
+        padding: 12px 15px;
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      h1 {
+        font-size: 14px;
+        letter-spacing: 0.04em;
+      }
+
+      button {
+        max-width: 105px;
+        padding: 8px;
+        font-size: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      button {
+        transition: none;
+      }
+    }
+  </style>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+
+<body>
+
+
+  <button id="reset" type="button">Reset view</button>
+
+  <div id="viewer"></div>
+
+  <div id="status" role="status" aria-live="polite">
+    Loading sculpture…
+  </div>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+    import { OrbitControls } from
+      'three/addons/controls/OrbitControls.js';
+
+    const host = document.querySelector('#viewer');
+    const status = document.querySelector('#status');
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#f1faee');
+
+    const camera = new THREE.PerspectiveCamera(
+      40, innerWidth / innerHeight, 0.01, 10000
+    );
+    camera.position.set(4, 3, 6);
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: false
+    });
+
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+
+    host.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(
+      camera,
+      renderer.domElement
+    );
+
+    controls.enableDamping = true;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.6;
+
+    scene.add(
+      new THREE.HemisphereLight(
+        0xf1faee,
+        0x457b9d,
+        2
+      )
+    );
+
+    const key = new THREE.DirectionalLight(0xffe4b5, 3);
+    key.position.set(4, 7, 5);
+    scene.add(key);
+
+    const fill = new THREE.DirectionalLight(0xa8dadc, 2);
+    fill.position.set(-5, 1, -4);
+    scene.add(fill);
+
+    let model;
+
+    new OBJLoader().load(
+      './shell.obj',
+
+      object => {
+        model = object;
+
+        object.traverse(child => {
+          if (!child.isMesh) return;
+
+          child.material = new THREE.MeshStandardMaterial({
+            color: 0xfed07a,
+            metalness: 0.28,
+            roughness: 0.38,
+            side: THREE.DoubleSide
+          });
+        });
+
+        scene.add(object);
+
+        // Center and frame the sculpture automatically.
+        object.rotation.x = Math.PI;
+
+        const bounds = new THREE.Box3().setFromObject(object);
+        const center = bounds.getCenter(new THREE.Vector3());
+        const size = bounds.getSize(new THREE.Vector3());
+        const radius = Math.max(size.length() / 2, 0.1);
+
+        object.position.sub(center);
+
+        camera.position.set(
+          radius * 1.5,
+          radius,
+          radius * 2.5
+        );
+
+        camera.near = radius / 1000;
+        camera.far = radius * 100;
+        camera.updateProjectionMatrix();
+
+        controls.target.set(0, 0, 0);
+        controls.minDistance = radius * 0.5;
+        controls.maxDistance = radius * 10;
+        controls.update();
+
+        status.textContent =
+          'Drag to rotate ✰  Scroll to zoom ✰  Right-drag to pan';
+      },
+
+      xhr => {
+        if (xhr.total) {
+          status.textContent =
+            `Loading… ${Math.round(xhr.loaded / xhr.total * 100)}%`;
+        }
+      },
+
+      error => {
+        console.error(error);
+
+        status.textContent =
+          'Could not load shell.obj. Check the filename and local server.';
+      }
+    );
+
+    document.querySelector('#reset').onclick = () => {
+      if (!model) return;
+
+      controls.reset();
+      controls.target.set(0, 0, 0);
+    };
+
+    addEventListener('resize', () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+    });
+
+    renderer.setAnimationLoop(() => {
+      controls.update();
+      renderer.render(scene, camera);
+    });
+  </script>
+
+</body>
+</html>

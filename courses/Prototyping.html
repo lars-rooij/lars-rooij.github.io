@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEdeRooij</title>
+    <link rel="icon" type="image/x-icon" href="/imgs/icon2.jpg">
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <main class="layout-wrapper">
+        <div class="layout">
+            <header class="header">
+                <button class="header-button header-button-left" type="button" onclick="location.href='PhysComp.html'">
+                    <span class="header-button-arrow">&lt;&lt;</span>
+                    <span class="header-button-title">Prev</span>
+                </button>
+
+                <div class="header-center">
+                    <h1>Course Page</h1>
+                </div>
+
+                <button class="header-button header-button-right" type="button" onclick="location.href='Strategies.html'">
+                    <span class="header-button-arrow">&gt;&gt;</span>
+                    <span class="header-button-title">Next</span>
+                </button>
+            </header>
+
+            <section class="columns">
+                <article class="column"  style="text-align: center;">
+                    <h2>Prototyping - Fall 2026</h2>
+                    <p>
+                        Prototyping is commonly taught as the acquisition of tool-specific skills. This course takes a different starting point: prototyping is treated as an enactive practice through which creativity takes place, and the practice itself becomes an object of study. Across the course students prototype in different traditions and use each cycle to interrogate what counts as a prototype, what creative actions a prototype enables, and which competencies it surfaces.
+                    </p>
+                </article>
+            </section>
+
+            <br>
+
+            <section id="course-assignments"  class="search-results"></section>
+
+
+        </div>
+
+        <aside class="floating-panel">
+            <div class="search-box">
+                <form action="../search.html" method="get">
+                    <input
+                        type="search"
+                        name="q"
+                        placeholder="Search..."
+                        aria-label="Search"
+                    >
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropdown-toggle" type="button" aria-expanded="false">
+                    <span>Quick Links</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+
+                <div class="dropdown-content" id="quick-links"></div>
+            </div>
+        </aside>
+    </main>
+
+    <script src="../search.js"></script>
+    <script src="../main.js"></script>
+    <script> displayCourseAssignments("Prototyping"); </script>
+</body>
+</html>

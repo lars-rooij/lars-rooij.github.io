@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5.js Sketch</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/p5.min.js"></script>
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: white;   
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+<script>
+
+let Pane;
+let pane;
+let pane2;
+let particles = [];
+let lastGravityUpdate = 0;
+
+const PARAMS = {
+    background: '#ffffff',
+    paintcolour: '#fed07a',
+    tilesize: 50,
+    gravity_active: false,
+    gravity_direction: 'down',
+    gravity_speed: 1
+};
+
+let previousTilesize = PARAMS.tilesize;
+
+const directions = {
+    up: [0, -1],
+    'up-right': [1, -1],
+    right: [1, 0],
+    'down-right': [1, 1],
+    down: [0, 1],
+    'down-left': [-1, 1],
+    left: [-1, 0],
+    'up-left': [-1, -1]
+};
+
+class Particle {
+    constructor(position) {
+        this.position = position;
+        this.colour = PARAMS.paintcolour;
+    }
+
+    display() {
+        fill(this.colour);
+        rect(this.position.x, this.position.y, PARAMS.tilesize);
+    }
+}
+
+async function setup() {
+    createCanvas(600, 600);
+
+    const tweakpaneModule = await import(
+        'https://cdn.jsdelivr.net/npm/tweakpane@4.0.5/dist/tweakpane.min.js'
+    );
+
+    Pane = tweakpaneModule.Pane;
+
+    const container = createDiv('')
+        .style('position', 'relative')
+        .style('max-width', '600px')
+        .style('margin', '0 auto');
+
+    select('canvas').parent(container);
+
+    const overlay = createDiv('')
+        .style('position', 'absolute')
+        .style('top', '102%')
+        .style('right', '0');
+
+    overlay.parent(container);
+
+    const leftPanel = createDiv('')
+        .style('position', 'absolute')
+        .style('top', '102%')
+        .style('left', '0');
+
+    leftPanel.parent(container);
+
+    createDiv(
+        '<strong>BEWARE regarding tilesize:</strong><br>' +
+        'Adjusting this slider resets the board.<br><br>'
+    ).parent(leftPanel);
+
+    pane = new Pane({
+        container: overlay.elt
+    });
+
+    pane.addBinding(PARAMS, 'background');
+    pane.addBinding(PARAMS, 'paintcolour');
+    pane.addBinding(PARAMS, 'gravity_active');
+
+    pane.addBinding(PARAMS, 'gravity_direction', {
+        options: {
+            '↑ Up': 'up',
+            '↗ Up-right': 'up-right',
+            '→ Right': 'right',
+            '↘ Down-right': 'down-right',
+            '↓ Down': 'down',
+            '↙ Down-left': 'down-left',
+            '← Left': 'left',
+            '↖ Up-left': 'up-left'
+        }
+    });
+
+    pane.addBinding(PARAMS, 'gravity_speed', {
+        min: 0.25,
+        max: 5,
+        step: 0.05
+    });
+
+    pane2 = new Pane({
+        container: leftPanel.elt
+    });
+
+    pane2.addBinding(PARAMS, 'tilesize', {
+        min: 10,
+        max: 100,
+        step: 1
+    });
+}
+
+function draw() {
+    if (PARAMS.tilesize !== previousTilesize) {
+        particles = [];
+        previousTilesize = PARAMS.tilesize;
+    }
+
+    background('black');
+    fill(PARAMS.background);
+
+    const tileSize = PARAMS.tilesize;
+    const offsetX = (width % tileSize) / 2;
+    const offsetY = (height % tileSize) / 2;
+
+    for (let tileX = offsetX; tileX <= width - tileSize; tileX += tileSize) {
+        for (let tileY = offsetY; tileY <= height - tileSize; tileY += tileSize) {
+            rect(tileX, tileY, tileSize);
+        }
+    }
+
+    fill(PARAMS.paintcolour);
+    circle(mouseX, mouseY, 25);
+
+    if (mouseIsPressed) {
+        createParticleAtMouse();
+    }
+
+    if (
+        PARAMS.gravity_active &&
+        millis() - lastGravityUpdate >= 500 / PARAMS.gravity_speed
+    ) {
+        applyGravity();
+        lastGravityUpdate = millis();
+    }
+
+    for (const particle of particles) {
+        particle.display();
+    }
+}
+
+function applyGravity() {
+    const tileSize = PARAMS.tilesize;
+    const offsetX = (width % tileSize) / 2;
+    const offsetY = (height % tileSize) / 2;
+
+    const [directionX, directionY] =
+        directions[PARAMS.gravity_direction];
+
+    particles.sort(
+        (particleA, particleB) =>
+            particleB.position.x * directionX +
+            particleB.position.y * directionY -
+            particleA.position.x * directionX -
+            particleA.position.y * directionY
+    );
+
+    for (const particle of particles) {
+        const targetX =
+            particle.position.x + directionX * tileSize;
+
+        const targetY =
+            particle.position.y + directionY * tileSize;
+
+        if (
+            targetX < offsetX ||
+            targetX > width - tileSize + offsetX ||
+            targetY < offsetY ||
+            targetY > height - tileSize + offsetY
+        ) {
+            continue;
+        }
+
+        const occupied = particles.some(
+            otherParticle =>
+                otherParticle !== particle &&
+                otherParticle.position.x === targetX &&
+                otherParticle.position.y === targetY
+        );
+
+        if (!occupied) {
+            particle.position.x = targetX;
+            particle.position.y = targetY;
+        }
+    }
+}
+
+function createParticleAtMouse() {
+    const tileSize = PARAMS.tilesize;
+    const offsetX = (width % tileSize) / 2;
+    const offsetY = (height % tileSize) / 2;
+
+    const particleX =
+        floor((mouseX - offsetX) / tileSize) * tileSize + offsetX;
+
+    const particleY =
+        floor((mouseY - offsetY) / tileSize) * tileSize + offsetY;
+
+    if (
+        particleX < offsetX ||
+        particleX > width - tileSize + offsetX ||
+        particleY < offsetY ||
+        particleY > height - tileSize + offsetY
+    ) {
+        return;
+    }
+
+    const existingParticle = particles.find(
+        particle =>
+            particle.position.x === particleX &&
+            particle.position.y === particleY
+    );
+
+    if (existingParticle) {
+        existingParticle.colour = PARAMS.paintcolour;
+    } else {
+        particles.push(
+            new Particle(createVector(particleX, particleY))
+        );
+    }
+}
+
+</script>
+
+</body>
+</html>

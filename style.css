@@ -1,0 +1,406 @@
+:root {
+    --lightest-color: #f1faee;
+    --middle-color-one: #a8dadc;
+    --middle-color-two: #457b9d;
+    --darkest-color: #1d3557;
+    font-size: large;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+    background: url("imgs/background.jpg") center / cover no-repeat fixed;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0 0 30px;
+    font-family: "Share Tech Mono", monospace;
+    color: var(--darkest-color);
+    background: transparent;
+    overflow-x: hidden;
+}
+
+.layout-wrapper {
+    width: 95vw;
+    max-width: 1650px;
+    margin: 0 auto;
+}
+
+.layout {
+    width: 71vw;
+    margin-right: 25vw;
+    padding-top: 9vw;
+    min-width: 0;
+}
+
+
+.header {
+    position: fixed;
+    top: 1.5vw;
+    left: 2.5vw;
+    width: 71vw;
+
+    height: 6vw;
+    padding: 1.5vw 2vw;
+
+    background-color: var(--lightest-color);
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px var(--middle-color-two), 7px 7px var(--darkest-color);
+
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1vw;
+
+    z-index: 100;
+}
+
+.header-button {
+    height: 50px;
+    min-width: 50px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--darkest-color);
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+.header-button:hover {
+    color: var(--lightest-color);
+    background-color: var(--middle-color-two);
+}
+
+.header-button-left {
+    justify-self: start;
+}
+
+.header-button-right {
+    justify-self: end;
+    flex-direction: row-reverse;
+}
+
+.header-button-arrow {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.header-button-title {
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+.header-center {
+    min-width: 0;
+    text-align: center;
+}
+
+.header-center h1 {
+    width: 100%;
+    margin: 0;
+}
+
+/* Main columns */
+
+.columns {
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+}
+
+.column {
+    flex: 1;
+    min-width: 0;
+    background-color: var(--middle-color-one);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 0 0 1px var(--middle-color-two), 7px 7px var(--darkest-color);
+}
+
+.right-column {
+    flex: 6;
+    min-width: 0;
+}
+
+.right-column img {
+    display: block;
+    margin: 0 auto;
+}
+
+.left-column {
+    flex: 2;
+    min-width: 0;
+}
+
+.column img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+
+/*these 2 specifically for many pics*/
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--rows), 1fr);
+    gap: 10px;
+    width: 100%;
+}
+
+.image-grid img {
+    width: 100%;
+    aspect-ratio: auto;
+    object-fit: cover;
+    display: block;
+}
+
+/* Floating right panel */
+.floating-panel {
+    position: fixed;
+    top: 1.5vw;
+    right: 2.5vw;
+    width: 22.5vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vw;
+    
+
+    z-index: 100;
+}
+/* Search */
+
+.search-box {
+    height: 6vw;
+    padding: 15px;
+    background-color: var(--middle-color-one);
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px var(--middle-color-two), 7px 7px var(--darkest-color);
+    display: flex;
+    align-items: center;
+}
+
+.search-box form {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+}
+
+.search-box input {
+    flex: 1;
+    min-width: 0;
+    height: 45px;
+    padding: 0 15px;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--darkest-color);
+    background-color: var(--lightest-color);
+    border: 1px solid var(--middle-color-two);
+    border-radius: 5px;
+    outline: none;
+}
+
+.search-box input:focus {
+    box-shadow: 0 0 5px var(--middle-color-two);
+}
+
+.search-box button {
+    height: 45px;
+    padding: 0 15px;
+    font-family: inherit;
+    color: var(--lightest-color);
+    background-color: var(--darkest-color);
+    border: 1px solid var(--middle-color-two);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+.search-box button:hover {
+    background-color: var(--middle-color-two);
+    transform: scale(1.05);
+}
+
+/* Dropdown */
+
+.dropdown {
+    background-color: var(--middle-color-one);
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px var(--middle-color-two), 7px 7px var(--darkest-color);
+    overflow: hidden;
+}
+
+.dropdown-toggle {
+    width: 100%;
+    padding: 18px 20px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--darkest-color);
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    text-align: left;
+    transition: 0.1s;
+}
+
+.dropdown-toggle:hover {
+    color: var(--lightest-color);
+    background-color: var(--middle-color-two);
+}
+
+.dropdown-arrow {
+    transition: transform 0.2s ease;
+}
+
+.dropdown-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+}
+
+.dropdown.open .dropdown-content {
+    max-height: 2000px;
+}
+
+.dropdown.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 13px 20px;
+    color: var(--darkest-color);
+    text-decoration: none;
+    border-top: 1px solid var(--middle-color-two);
+    transition: 0.1s;
+}
+
+.dropdown-content a:hover {
+    color: var(--lightest-color);
+    background-color: var(--middle-color-two);
+}
+
+/* small dropdown for 'select' classes. 105 picture specific for now.*/
+.dropdown-select {
+    width: 100%;
+    padding: 13px 20px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--darkest-color);
+    background-color: var(--lightest-color);
+    border: 1px solid var(--middle-color-two);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Search results */
+
+.search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.search-result {
+    display: block;
+    padding: 20px;
+    color: var(--darkest-color);
+    background-color: var(--middle-color-one);
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px var(--middle-color-two), 7px 7px var(--darkest-color);
+    text-decoration: none;
+    transition: 0.1s;
+}
+
+.search-result:hover {
+    color: var(--lightest-color);
+    background-color: var(--middle-color-two);
+    transform: translateX(3px);
+}
+
+.search-result h2 {
+    margin: 0 0 8px;
+}
+
+.search-result p {
+    margin: 0 0 10px;
+}
+
+.search-tags {
+    font-size: 0.8em;
+    opacity: 0.8;
+}
+
+/* General typography */
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+ul,
+blockquote,
+a {
+    text-shadow: 0 0 1px var(--darkest-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    margin-top: 0;
+}
+
+a {
+    color: var(--darkest-color);
+}
+
+hr {
+    color: var(--darkest-color);
+    border: 1px solid var(--middle-color-two);
+    border-radius: 10px;
+}
+
+blockquote {
+    width: 100%;
+    margin: 0 0 25px;
+    padding: 10px;
+    color: var(--middle-color-one);
+    background-color: var(--darkest-color);
+    border-radius: 12px 10px 0 0;
+}
+
+/* Scrollbar */
+
+*::-webkit-scrollbar {
+    width: 0;
+    height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: var(--darkest-color);
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: var(--middle-color-two);
+}

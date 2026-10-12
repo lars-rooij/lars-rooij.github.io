@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEdeRooij</title>
+    <link rel="icon" type="image/x-icon" href="/imgs/icon2.jpg">
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <main class="layout-wrapper">
+        <div class="layout">
+            <header class="header">
+                <button class="header-button header-button-left" type="button" onclick="location.href='prototyping-1.html'">
+                    <span class="header-button-arrow">&lt;&lt;</span>
+                    <span class="header-button-title">Prev</span>
+                </button>
+
+                <div class="header-center">
+                    <h1>50 shapes in 5 minutes</h1>
+                </div>
+
+                <button class="header-button header-button-right" type="button" onclick="location.href='prototyping-3.html'">
+                    <span class="header-button-arrow">&gt;&gt;</span>
+                    <span class="header-button-title">Next</span>
+                </button>
+            </header>
+
+            <section class="columns">
+                <article class="column left-column">
+                    <h2>Assignment</h2>
+                    <h3>Prototyping, sept 2026</h3>
+                    <p>
+                        Draw 5 variations, and 10 itterations, of anything. (Done twice)
+                    </p>
+
+                    <hr>
+                    
+                    <h3>Tags</h3>
+                    <p>
+                        warm-up drawing doodle sketch Prototyping
+                    </p>
+                </article>
+
+                <article class="column right-column">
+                    <p>
+                        It's a lot of looking around me and seeing what shapes I could simplify, and how I could change them. I like playing with the very basics of what makes it a shape, and mainly rotating or shifting those basics. I'm glad to have achieved 50 shapes both times, that did not seem feasible to me when it started. 
+                    </p>
+
+                    <img src="../imgs/prototyping2-1.jpg" alt="50 shapes in green pen on paper" style="width:49%; float:left">
+                    <img src="../imgs/prototyping2-2.jpg" alt="50 shapes in green pen on paper" style="width:49%; float:right">
+
+
+                </article>
+            </section>
+        </div>
+
+        <aside class="floating-panel">
+            <div class="search-box">
+                <form action="../search.html" method="get">
+                    <input type="search" name="q" placeholder="Search..." aria-label="Search">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropdown-toggle" type="button" aria-expanded="false">
+                    <span>Quick Links</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+
+                <div class="dropdown-content" id="quick-links"></div>
+            </div>
+        </aside>
+    </main>
+
+    <script src="../search.js"></script>
+    <script src="../main.js"></script>
+
+</body>
+</html>

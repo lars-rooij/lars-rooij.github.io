@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEdeRooij</title>
+    <link rel="icon" type="image/x-icon" href="/imgs/icon2.jpg">
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <main class="layout-wrapper">
+        <div class="layout">
+            <header class="header">
+                <button class="header-button header-button-left" type="button" onclick="location.href='CreaComp.html'">
+                    <span class="header-button-arrow">&lt;&lt;</span>
+                    <span class="header-button-title">Prev</span>
+                </button>
+
+                <div class="header-center">
+                    <h1>Course Page</h1>
+                </div>
+
+                <button class="header-button header-button-right" type="button" onclick="location.href='Prototyping.html'">
+                    <span class="header-button-arrow">&gt;&gt;</span>
+                    <span class="header-button-title">Next</span>
+                </button>
+            </header>
+
+            <section class="columns">
+                <article class="column"  style="text-align: center;">
+                    <h2>Physical Computing - Fall 2026</h2>
+                    <p>
+                        This part of the course is about connecting computers to the physical world. We regularly connect ourselves to computers, for example via keyboard, mouse, monitor, and touch screen. However, many creative computing applications require a computer to connect to the physical world via other sensors (buttons, dials, thermometers, distance sensors, pressure sensors, accelerometers, light sensors, …) and actuators (motors, stepper motors, servo’s, leds, lcd’s, electrical appliances, …). Through computer programming, meaningful interaction patterns between sensors input and actuator output can be created. Typical application domains where computers sense and act in the physical world are robotics, interactive installations, home automation, and experimental research equipment.
+                    </p>
+                </article>
+            </section>
+
+            <br>
+
+            <section id="course-assignments"  class="search-results"></section>
+
+
+        </div>
+
+        <aside class="floating-panel">
+            <div class="search-box">
+                <form action="../search.html" method="get">
+                    <input
+                        type="search"
+                        name="q"
+                        placeholder="Search..."
+                        aria-label="Search"
+                    >
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropdown-toggle" type="button" aria-expanded="false">
+                    <span>Quick Links</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+
+                <div class="dropdown-content" id="quick-links"></div>
+            </div>
+        </aside>
+    </main>
+
+    <script src="../search.js"></script>
+    <script src="../main.js"></script>
+    <script> displayCourseAssignments("PhysicalComputing"); </script>
+</body>
+</html>

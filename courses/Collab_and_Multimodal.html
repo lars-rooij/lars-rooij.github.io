@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEdeRooij</title>
+    <link rel="icon" type="image/x-icon" href="/imgs/icon2.jpg">
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <main class="layout-wrapper">
+        <div class="layout">
+            <header class="header">
+                <button class="header-button header-button-left" type="button" onclick="location.href='ArtificCreatures.html'">
+                    <span class="header-button-arrow">&lt;&lt;</span>
+                    <span class="header-button-title">Prev</span>
+                </button>
+
+                <div class="header-center">
+                    <h1>Course Page</h1>
+                </div>
+
+                <button class="header-button header-button-right" type="button" onclick="location.href='CreaComp.html'">
+                    <span class="header-button-arrow">&gt;&gt;</span>
+                    <span class="header-button-title">Next</span>
+                </button>
+            </header>
+
+            <section class="columns">
+                <article class="column"  style="text-align: center;">
+                    <h2>Collaborative and Multimodel Interaction - Fall 2026</h2>
+                    <p>
+                        Collaborative and Multimodal Interaction (CMI) focuses on how people interact with and through computers with an emphasis on AI. This includes conversational agents, language models, multimodal interaction, AI-assisted creativity, and the social and ethical implications of Human-AI collaboration. Recent advances in AI have fundamentally changed the way people communicate, create, and collaborate, raising new questions about the design, evaluation, and impact of interactive systems. This course addresses those questions through direct engagement with current research.
+                    </p>
+                </article>
+            </section>
+
+            <br>
+
+            <section id="course-assignments"  class="search-results"></section>
+
+
+        </div>
+
+        <aside class="floating-panel">
+            <div class="search-box">
+                <form action="../search.html" method="get">
+                    <input
+                        type="search"
+                        name="q"
+                        placeholder="Search..."
+                        aria-label="Search"
+                    >
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropdown-toggle" type="button" aria-expanded="false">
+                    <span>Quick Links</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+
+                <div class="dropdown-content" id="quick-links"></div>
+            </div>
+        </aside>
+    </main>
+
+    <script src="../search.js"></script>
+    <script src="../main.js"></script>
+    <script> displayCourseAssignments("CollaborativeAndMultimodelInteraction"); </script>
+</body>
+</html>

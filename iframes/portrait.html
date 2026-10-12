@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5.js Sketch</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/p5.min.js"></script>
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+<script>
+
+let img;
+
+function preload() {
+    img = loadImage('../imgs/cute.jpg');
+}
+
+function setup() {
+    createCanvas(200, 250);
+
+    img.resize(width, height);
+
+    translate(width, height);
+    scale(-1, -1);
+
+    noFill();
+    noStroke();
+    rectMode(CORNERS);
+
+    let tile = 5;
+    randomSeed(1504);
+
+    for (let x = 0; x <= width; x += tile) {
+        let counter = 0;
+
+        for (let y = 0; y <= height; y += tile) {
+
+            if (random() <= 0.65 && y < height - tile) {
+                counter += 1;
+
+            } else if (y >= height - tile) {
+
+                fill('white');
+
+                rect(
+                    x,
+                    y,
+                    x - tile,
+                    y - counter * tile,
+                    100,
+                    100,
+                    0,
+                    0
+                );
+
+            } else {
+
+                let c = img.get(
+                    width - x,
+                    height - y + tile
+                );
+
+                fill(c);
+
+                rect(
+                    x,
+                    y,
+                    x - tile,
+                    max(y - counter * tile, 0),
+                    100,
+                    100,
+                    0,
+                    0
+                );
+
+                counter = 1.5;
+            }
+        }
+    }
+
+    noLoop();
+}
+
+</script>
+
+</body>
+</html>

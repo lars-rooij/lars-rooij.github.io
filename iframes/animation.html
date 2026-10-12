@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5.js Sketch</title>
+
+    <!-- p5.js -->
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/p5.min.js"></script>
+
+    <!-- Google Font: Sniglet -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sniglet&display=swap" rel="stylesheet">
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+<script>
+
+let backgroundLayer;
+let foregroundLayer;
+let maskLayer;
+let scaledMask;
+let img;
+
+const SPEED = 0.1; // speed of bugs
+const DELTA = 5; // "haphazardness" of bugs. jittery-ness
+const UPDATES_PER_FRAME = 5;
+const ZOOM_DURATION = 4000;
+const BUG_SIZE = 5;
+const NUM_BUGS = 50;
+
+let bugs = [];
+let frontscale = 1;
+let startMillis;
+
+
+async function setup() {
+    createCanvas(500, 500);
+
+    randomSeed(5);
+    angleMode(DEGREES);
+
+    // Load the image
+    img = await loadImage('pipi.svg');
+
+    // Initiate buggies
+    for (let i = 0; i < NUM_BUGS; i++) {
+        bugs.push({
+            x: random(width),
+            y: random(height),
+            angle: random(360)
+        });
+    }
+
+    // Initiate layers
+    backgroundLayer = createGraphics(width, height);
+    foregroundLayer = createGraphics(width, height);
+    maskLayer = createGraphics(width + 10, height);
+    scaledMask = createGraphics(width, height);
+
+    // Set font for the graphics layer
+    foregroundLayer.textFont('Sniglet');
+
+    startMillis = millis();
+}
+
+
+function draw() {
+    clear();
+
+    updateScale();
+    updateBugs();
+
+    // Foreground layer
+    foregroundLayer.clear();
+    foregroundLayer.background('#4F6F3A');
+    drawBugs(foregroundLayer, "small");
+
+    // Background layer
+    backgroundLayer.clear();
+    backgroundLayer.background('#704A32');
+    drawBugs(backgroundLayer, "big");
+
+
+    // -------------------------
+    // Mask
+    // -------------------------
+
+    maskLayer.clear();
+    maskLayer.background(255);
+
+    maskLayer.erase();
+
+    maskLayer.circle(140, 240, 100);
+    maskLayer.circle(340, 240, 100);
+
+    maskLayer.noErase();
+
+
+    // Scale mask
+    scaledMask.clear();
+
+    scaledMask.push();
+
+    scaledMask.translate(1, height / 2);
+    scaledMask.scale(frontscale);
+    scaledMask.translate(1, -height / 2);
+
+    scaledMask.image(maskLayer, -10, 0);
+
+    scaledMask.pop();
+
+
+    // Apply mask
+    const maskedForeground = foregroundLayer.get();
+    maskedForeground.mask(scaledMask);
+
+
+    // -------------------------
+    // Background
+    // -------------------------
+
+    push();
+
+    translate(width / 2, height / 2);
+    scale(frontscale);
+    translate(-width / 2, -height / 2);
+
+    imageMode(CORNER);
+    image(backgroundLayer, 0, 0);
+
+    pop();
+
+
+    // -------------------------
+    // Foreground
+    // -------------------------
+
+    imageMode(CORNER);
+    image(maskedForeground, 0, 0);
+
+
+    // -------------------------
+    // Text
+    // -------------------------
+
+    push();
+
+    translate(1, height / 2);
+    scale(frontscale);
+    translate(1, -height / 2);
+
+    fill('#C2C2BB');
+
+    textFont('Sniglet');
+    textSize(250);
+
+    text('pipi', 50, 300);
+
+    pop();
+}
+
+
+// -------------------------
+// Bug movement
+// -------------------------
+
+function updateBugs() {
+
+    for (const bug of bugs) {
+
+        for (let n = 0; n < UPDATES_PER_FRAME; n++) {
+
+            bug.angle += DELTA * random(-0.01, 0.01);
+
+            bug.x += SPEED * cos(bug.angle);
+            bug.y -= SPEED * sin(bug.angle);
+
+            bug.x = (bug.x + width) % width;
+            bug.y = (bug.y + height) % height;
+        }
+    }
+}
+
+
+// -------------------------
+// Draw bugs
+// -------------------------
+
+function drawBugs(pg, scale = "small") {
+
+    pg.push();
+
+    pg.fill('black');
+    pg.rectMode(CENTER);
+    pg.imageMode(CENTER);
+
+    for (const bug of bugs) {
+
+        pg.push();
+
+        pg.translate(bug.x, bug.y);
+        pg.rotate(bug.angle);
+
+        // Small bugs
+        if (scale == "small") {
+
+            pg.rect(
+                0,
+                BUG_SIZE,
+                BUG_SIZE,
+                BUG_SIZE,
+                30
+            );
+
+        }
+
+        // Large image-based bugs
+        else {
+
+            pg.image(
+                img,
+                0,
+                (BUG_SIZE * 9) / 4,
+                BUG_SIZE * 9,
+                BUG_SIZE * 9
+            );
+        }
+
+        pg.pop();
+    }
+
+    pg.pop();
+}
+
+
+// -------------------------
+// Animation scaling
+// -------------------------
+
+function updateScale() {
+
+    const t = millis() - startMillis;
+    const half = ZOOM_DURATION / 2;
+
+    if (t < half) {
+
+        frontscale = lerp(
+            1,
+            2,
+            easeInOut(t / half)
+        );
+
+    } else {
+
+        frontscale = lerp(
+            2,
+            1,
+            easeInOut((t - half) / half)
+        );
+    }
+
+    if (t >= ZOOM_DURATION) {
+        startMillis = millis();
+    }
+}
+
+
+// -------------------------
+// Easing
+// -------------------------
+
+function easeInOut(t) {
+
+    t = constrain(t, 0, 1);
+
+    if (t < 0.5) {
+
+        return 4 * t * t * t;
+
+    }
+
+    return 1 - pow(-2 * t + 2, 3) / 2;
+}
+
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEdeRooij</title>
+    <link rel="icon" type="image/x-icon" href="/imgs/icon2.jpg">
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <main class="layout-wrapper">
+        <div class="layout">
+            <header class="header">
+                <button class="header-button header-button-left" type="button" onclick="location.href='Collab_and_Multimodal.html'">
+                    <span class="header-button-arrow">&lt;&lt;</span>
+                    <span class="header-button-title">Prev</span>
+                </button>
+
+                <div class="header-center">
+                    <h1>Course Page</h1>
+                </div>
+
+                <button class="header-button header-button-right" type="button" onclick="location.href='PhysComp.html'">
+                    <span class="header-button-arrow">&gt;&gt;</span>
+                    <span class="header-button-title">Next</span>
+                </button>
+            </header>
+
+            <section class="columns">
+                <article class="column"  style="text-align: center;">
+                    <h2>Creative Computation - Fall 2026</h2>
+                    <p>
+                        In this course we will explore computation as a medium for creative expression. We will explore the use of multiple programming languages (e.g. Javascript, Pure Data) applied across various domains (e.g. visual, audio, design) to produce dynamic, generative, and interactive experiences.
+
+Students will create programs every week to explore different approaches to programming as a creative medium. Students will produce dynamic generators and animations, as well as, interactive experiences and tools. This course trains students to think algorithmically to express their ideas.
+
+The course recognises the importance of being familiar with different programming languages and coding styles to best support different creative goals. In addition, the course will explore how systems can be constructed by combining components developed using different programming languages and tools.
+                    </p>
+                </article>
+            </section>
+
+            <br>
+
+            <section id="course-assignments"  class="search-results"></section>
+
+
+        </div>
+
+        <aside class="floating-panel">
+            <div class="search-box">
+                <form action="../search.html" method="get">
+                    <input
+                        type="search"
+                        name="q"
+                        placeholder="Search..."
+                        aria-label="Search"
+                    >
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropdown-toggle" type="button" aria-expanded="false">
+                    <span>Quick Links</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+
+                <div class="dropdown-content" id="quick-links"></div>
+            </div>
+        </aside>
+    </main>
+
+    <script src="../search.js"></script>
+    <script src="../main.js"></script>
+    <script> displayCourseAssignments("CreativeComputation"); </script>
+</body>
+</html>

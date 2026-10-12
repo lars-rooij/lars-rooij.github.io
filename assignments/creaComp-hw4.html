@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEdeRooij</title>
+    <link rel="icon" type="image/x-icon" href="/imgs/icon2.jpg">
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <main class="layout-wrapper">
+        <div class="layout">
+            <header class="header">
+                <button class="header-button header-button-left" type="button" onclick="location.href='creaComp-hw3.html'">
+                    <span class="header-button-arrow">&lt;&lt;</span>
+                    <span class="header-button-title">Prev</span>
+                </button>
+
+                <div class="header-center">
+                    <h1>Generative 3D Model</h1>
+                </div>
+
+                <button class="header-button header-button-right" type="button" onclick="location.href='creaComp-hw5.html'">
+                    <span class="header-button-arrow">&gt;&gt;</span>
+                    <span class="header-button-title">Next</span>
+
+                </button>
+            </header>
+
+            <section class="columns">
+                <article class="column left-column">
+                    <h2>Assignment</h2>
+                    <h3>Creative Computation, oct 2026</h3>
+                    <p>
+                       Make a printable 3D model based around coding grammar
+                    </p>
+
+                    <hr>
+
+                    <h3>Medium</h3>
+                    <p>
+                        EisenScript
+                    </p>
+                    <hr>
+                    
+                    <h3>Tags</h3>
+                    <p>
+                        code programming javascript drawing 3Dmodeling 3D CreativeComputation 
+                    </p>
+                </article>
+
+                <article class="column right-column">
+                    <iframe
+                        src="../iframes/generative3D.html"
+                        width="650"
+                        height="650"
+                        style="border: none; transform: scale(0.9); "
+                    ></iframe>
+                    
+                    <p>
+                        Inspired by a shell, I wanted to make a spiral rotation. I started with a base spiral, and made that smaller and turn slightly with each step. 
+                    </p>
+                    <pre><code>
+{s 0.2 rx -90}shell
+
+rule shell maxdepth 100{
+  curve
+  {x 0.5 y -0.45 z -0.275 s 0.95 rx -2.5 hue 2} shell
+
+}
+
+rule curve maxdepth 50{
+  { x 12.5 s 2.1 1 0.4 hue 55 rx 60 rz -10 ry -17} box
+  {s 0.9 1 1 y -2 rz 10 hue 8 } curve
+}
+
+                    </code></pre>
+                </article>
+            </section>
+        </div>
+
+        <aside class="floating-panel">
+            <div class="search-box">
+                <form action="../search.html" method="get">
+                    <input type="search" name="q" placeholder="Search..." aria-label="Search">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropdown-toggle" type="button" aria-expanded="false">
+                    <span>Quick Links</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+
+                <div class="dropdown-content" id="quick-links"></div>
+            </div>
+        </aside>
+    </main>
+
+    <script src="../search.js"></script>
+    <script src="../main.js"></script>
+
+</body>
+</html>

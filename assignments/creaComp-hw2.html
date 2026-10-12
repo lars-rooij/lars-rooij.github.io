@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEdeRooij</title>
+    <link rel="icon" type="image/x-icon" href="/imgs/icon2.jpg">
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <main class="layout-wrapper">
+        <div class="layout">
+            <header class="header">
+                <button class="header-button header-button-left" type="button" onclick="location.href='creaComp-hw1.html'">
+                    <span class="header-button-arrow">&lt;&lt;</span>
+                    <span class="header-button-title">Prev</span>
+                </button>
+
+                <div class="header-center">
+                    <h1>Word Story Animation</h1>
+                </div>
+
+                <button class="header-button header-button-right" type="button" onclick="location.href='creaComp-hw3.html'">
+                    <span class="header-button-arrow">&gt;&gt;</span>
+                    <span class="header-button-title">Next</span>
+
+                </button>
+            </header>
+
+            <section class="columns">
+                <article class="column left-column">
+                    <h2>Assignment</h2>
+                    <h3>Creative Computation, sept 2026</h3>
+                    <p>
+                       Using p5.js, signify the meaning of a word by animating only the word and symbol.
+                    </p>
+
+                    <hr>
+
+                    <h3>Medium</h3>
+                    <p>
+                        p5.js, javascript
+                    </p>
+                    <hr>
+                    
+                    <h3>Tags</h3>
+                    <p>
+                        code programming javascript drawing animation p5.js CreativeComputation 
+
+                    </p>
+                </article>
+
+                <article class="column right-column">
+                    <iframe
+                        src="../iframes/animation.html"
+                        width="500"
+                        height="500"
+                        style="border: none;"
+                    ></iframe>
+                    
+                    <p>
+                        Pipi, aside from being an obviously funny sounding words, means bugs, ants, and any small crawly animal you can think of. Thinking about what that word means to me, childhood memories of being fascinated by the small creatures and looking at them through my magnifying glass come to mind. I figured that such a magnification, alongside the jittery movement from random paths, makes the meaning clear from my animation. I twiddled a bit with the magnification factor, speed of the bugs and of the zoom, bug amount etc., and got to my final result.   
+                    </p>
+                    <pre><code>
+let backgroundLayer;
+let foregroundLayer;
+let maskLayer;
+let scaledMask;
+let img;
+
+const SPEED = 0.1; // speed of bugs
+const DELTA = 5; // "haphazardness" of bugs. jittery-ness
+const UPDATES_PER_FRAME = 5;
+const ZOOM_DURATION = 4000;
+const BUG_SIZE = 5;
+const NUM_BUGS = 50;
+
+let bugs = [];
+let frontscale = 1;
+let startMillis;
+
+
+
+async function setup() {
+  createCanvas(500, 500);
+  randomSeed(5);
+  angleMode(DEGREES);
+
+  await loadFont('https://fonts.googleapis.com/css2?family=Sniglet');
+  img = await loadImage('pipi.svg');
+
+  // initiate buggies
+  for (let i = 0; i < NUM_BUGS; i++) {
+    bugs.push({
+      x: random(width),
+      y: random(height),
+      angle: random(360)
+    });
+  }
+
+  // initiate layers
+  backgroundLayer = createGraphics(width, height); // brown
+  foregroundLayer = createGraphics(width, height); // green
+  maskLayer = createGraphics(width +10, height); // basic mask
+  scaledMask = createGraphics(width, height);
+
+  foregroundLayer.textFont('Sniglet');
+
+  startMillis = millis();
+}
+
+function draw() {
+  clear();
+
+  updateScale(); // results in scaleing for pipi & mask & brown layer
+  updateBugs(); // updates bug movement in both brown and green layer
+
+  foregroundLayer.clear();
+  foregroundLayer.background('#4F6F3A');
+  drawBugs(foregroundLayer, "small");
+
+  backgroundLayer.clear();
+  backgroundLayer.background('#704A32');
+  drawBugs(backgroundLayer, "big");
+
+  // Mask
+  maskLayer.clear();
+  maskLayer.background(255);
+  maskLayer.erase();
+  maskLayer.circle(140, 240, 100);
+  maskLayer.circle(340, 240, 100);
+  maskLayer.noErase();
+
+  scaledMask.clear();
+  scaledMask.push();
+  scaledMask.translate(1, height / 2); // scales along y-axis
+  scaledMask.scale(frontscale);
+  scaledMask.translate(1, -height / 2); 
+  scaledMask.image(maskLayer, -10, 0);
+  scaledMask.pop();
+
+  const maskedForeground = foregroundLayer.get();
+  maskedForeground.mask(scaledMask);
+
+  // background
+  push();
+  translate(width / 2, height / 2); // scale equally along x & y
+  scale(frontscale);
+  translate(-width / 2, -height / 2);
+  imageMode(CORNER);
+  image(backgroundLayer, 0, 0);
+  pop();
+
+  // foreground
+  imageMode(CORNER);
+  image(maskedForeground, 0, 0);
+
+  // text
+  push();
+  translate(1, height / 2); // scales along y-axis
+  scale(frontscale);
+  translate(1, -height / 2);
+  fill('#C2C2BB');
+  textFont('Sniglet');
+  textSize(250);
+  text('pipi', 50, 300);
+
+  pop();
+}
+
+// buggie movement
+function updateBugs() {
+  for (const bug of bugs) {
+    for (let n = 0; n < UPDATES_PER_FRAME; n++) {
+      bug.angle += DELTA * random(-0.01, 0.01);
+      bug.x += SPEED * cos(bug.angle);
+      bug.y -= SPEED * sin(bug.angle);
+
+      bug.x = (bug.x + width) % width;
+      bug.y = (bug.y + height) % height;
+    }
+  }
+}
+
+function drawBugs(pg, scale="small") {
+  pg.push();
+  pg.fill('black');
+  pg.rectMode(CENTER);
+  pg.imageMode(CENTER);
+
+  for (const bug of bugs) {
+    pg.push();
+    pg.translate(bug.x, bug.y);
+    pg.rotate(bug.angle);
+    // regular bugs if small as arg. else image-based and larger bugs. 
+    if (scale == "small"){
+      pg.rect(0, BUG_SIZE, BUG_SIZE, BUG_SIZE, 30);
+    }
+    else{
+      pg.image( img, 0, (BUG_SIZE * 9) / 4, BUG_SIZE * 9, BUG_SIZE * 9);
+    }
+    pg.pop();
+  }
+  pg.pop();
+}
+
+function updateScale() {
+  const t = millis() - startMillis;
+  const half = ZOOM_DURATION / 2;
+
+  if (t < half) {
+    frontscale = lerp(1, 2, easeInOut(t / half));
+  } 
+  else {
+    frontscale = lerp(2, 1, easeInOut((t - half) / half) );
+  }
+
+  if (t >= ZOOM_DURATION) {
+    startMillis = millis();
+  }
+}
+
+function easeInOut(t) {
+  t = constrain(t, 0, 1);
+
+  if (t < 0.5) {
+    return 4 * t * t * t;
+  }
+
+  return 1 - pow(-2 * t + 2, 3) / 2;
+}
+
+
+                    </code></pre>
+                </article>
+            </section>
+        </div>
+
+        <aside class="floating-panel">
+            <div class="search-box">
+                <form action="../search.html" method="get">
+                    <input type="search" name="q" placeholder="Search..." aria-label="Search">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropdown-toggle" type="button" aria-expanded="false">
+                    <span>Quick Links</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+
+                <div class="dropdown-content" id="quick-links"></div>
+            </div>
+        </aside>
+    </main>
+
+    <script src="../search.js"></script>
+    <script src="../main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEdeRooij</title>
+    <link rel="icon" type="image/x-icon" href="/imgs/icon2.jpg">
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <main class="layout-wrapper">
+        <div class="layout">
+            <header class="header">
+                <button class="header-button header-button-left" type="button" onclick="location.href='../courses/CreaComp.html'">
+                    <span class="header-button-arrow">&lt;&lt;</span>
+                    <span class="header-button-title">Course Page</span>
+                </button>
+
+                <div class="header-center">
+                    <h1>Colourpicker Portrait</h1>
+                </div>
+
+                <button class="header-button header-button-right" type="button" onclick="location.href='creaComp-hw2.html'">
+                    <span class="header-button-arrow">&gt;&gt;</span>
+                    <span class="header-button-title">Next</span>
+
+                </button>
+            </header>
+
+            <section class="columns">
+                <article class="column left-column">
+                    <h2>Assignment</h2>
+                    <h3>Creative Computation, sept 2026</h3>
+                    <p>
+                        Using a Colourpicker tool, recreate a pattern representing a portrait of yourself.
+                    </p>
+
+                    <hr>
+
+                    <h3>Medium</h3>
+                    <p>
+                        p5.js, javascript
+                    </p>
+                    <hr>
+                    
+                    <h3>Tags</h3>
+                    <p>
+                        code programming javascript drawing photography p5.js CreativeComputation 
+
+                    </p>
+                </article>
+
+                <article class="column right-column">
+
+                    <iframe
+                        src="../iframes/portrait.html"
+                        width="200"
+                        height="250"
+                        style="border: none; margin: 0 auto "
+                        
+                    ></iframe>
+                    
+                    <p>
+                        I started with the idea of simplifying my portrait into large areas of colour, taking inspiration from the structure of a bar graph. I experimented with using vertical bars to represent different parts of the image, but found that uniform bars made the result feel too rigid. By allowing some of the bars to extend downward at random, I discovered a paint-dripping effect that made the portrait more dynamic while still keeping the original colours recognizable. I then adjusted the size and randomness of the bars until the effect felt balanced, resulting in a portrait that combines the structure of the original image with a more abstract, generated style.
+                    </p>
+                    <pre><code>
+async function setup() {
+    createCanvas(200, 250);
+    img = await loadImage('me.jpg');
+    img.resize(width, height);
+    translate(width, height);
+    scale(-1, -1);
+
+    noFill()
+    noStroke()
+    // stroke('white')
+    rectMode(CORNERS)
+    let tile = 5
+    randomSeed(1504)
+    
+    for  (let x = 0; x <= width; x += tile){
+        let counter = 0;
+        for  (let y = 0; y <= height; y += tile){
+        if( random() <= 0.65 && y < height-tile){
+            counter += 1;
+        }
+        else if(y >= height-tile){
+            fill('white')
+            rect(x, y, x-tile, y-counter*tile, 100, 100, 0, 0);
+        }
+        else{
+            let c = img.get(width - x, height - y + tile ); 
+            fill(c);
+            rect(x, y, x-tile, max(y-counter*tile, 0), 100, 100, 0, 0);
+            counter = 1.5;}
+        }
+    }
+}
+
+                    </code></pre>
+                </article>
+            </section>
+        </div>
+
+        <aside class="floating-panel">
+            <div class="search-box">
+                <form action="../search.html" method="get">
+                    <input type="search" name="q" placeholder="Search..." aria-label="Search">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropdown-toggle" type="button" aria-expanded="false">
+                    <span>Quick Links</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+
+                <div class="dropdown-content" id="quick-links"></div>
+            </div>
+        </aside>
+    </main>
+
+    <script src="../search.js"></script>
+    <script src="../main.js"></script>
+
+</body>
+</html>

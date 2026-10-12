@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEdeRooij</title>
+    <link rel="icon" type="image/x-icon" href="/imgs/icon2.jpg">
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <main class="layout-wrapper">
+        <div class="layout">
+            <header class="header">
+                <button class="header-button header-button-left" type="button" onclick="location.href='Tang_and_Play.html'">
+                    <span class="header-button-arrow">&lt;&lt;</span>
+                    <span class="header-button-title">Prev</span>
+                </button>
+
+                <div class="header-center">
+                    <h1>Course Page</h1>
+                </div>
+
+                <button class="header-button header-button-right" type="button" onclick="location.href='Collab_and_Multimodal.html'">
+                    <span class="header-button-arrow">&gt;&gt;</span>
+                    <span class="header-button-title">Next</span>
+                </button>
+            </header>
+
+            <section class="columns">
+                <article class="column" style="text-align: center;">
+                    <h2>Artifical Creatures - Fall 2026</h2>
+                    <p>
+                        Intelligent robots are all the rage nowadays; but what about emotional robots? And creative robots? Or even useless; curious; helpless or misbehaving robots? Does researching these bots with 'unique' human or lifelike qualities make us less or more human? And why should we care?
+
+In this course we discuss inspirational examples demonstrating that bots can be more than just smart; and argue that by studying bots like you we can learn more about who we are as humans, and speculate about our joint future.
+
+At the end of the course you will focus on a particular human or creaturelike quality, and make this experienceable through an artificial creature that you will build yourself
+                    </p>
+                </article>
+            </section>
+
+            <br>
+
+            <section id="course-assignments"  class="search-results"></section>
+
+
+        </div>
+
+        <aside class="floating-panel">
+            <div class="search-box">
+                <form action="../search.html" method="get">
+                    <input
+                        type="search"
+                        name="q"
+                        placeholder="Search..."
+                        aria-label="Search"
+                    >
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropdown-toggle" type="button" aria-expanded="false">
+                    <span>Quick Links</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+
+                <div class="dropdown-content" id="quick-links"></div>
+            </div>
+        </aside>
+    </main>
+
+    <script src="../search.js"></script>
+    <script src="../main.js"></script>
+    <script> displayCourseAssignments("ArtificialCreatures"); </script>
+</body>
+</html>
