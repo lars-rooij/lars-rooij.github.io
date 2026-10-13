@@ -274,7 +274,7 @@ body {
 }
 
 .dropdown.open .dropdown-content {
-    max-height: 2000px;
+    max-height: 20000px;
 }
 
 .dropdown.open .dropdown-arrow {
