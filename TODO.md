@@ -21,7 +21,7 @@ Current pages in active progress:
 
 --- 
 Last pushed: 13 Oct 2026. 
-Other than that listed above no known work required.
+sometime it might be nice to make a popup for clicked-on-images. 
 
 ---
 Structuremap:
