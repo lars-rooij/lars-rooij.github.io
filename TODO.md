@@ -11,6 +11,7 @@ Checklist new pages
 Current pages in active progress:
 - prototyping 1, 105 pictures. 
 	- add pics & catagorize them every week.
+	- add catagory to week 1
 - prototyping 4, 75 experiments.
 	- add pics every week.
 - prototying final, exploring movement
