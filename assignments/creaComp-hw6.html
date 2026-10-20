@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEdeRooij</title>
+    <link rel="icon" type="image/x-icon" href="../imgs/icon2.jpg">
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <main class="layout-wrapper">
+        <div class="layout">
+            <header class="header">
+                <button class="header-button header-button-left" type="button" onclick="location.href='creaComp-hw5.html'">
+                    <span class="header-button-arrow">&lt;&lt;</span>
+                    <span class="header-button-title">Prev</span>
+                </button>
+
+                <div class="header-center">
+                    <h1>Interactive Shader</h1>
+                </div>
+
+                <button class="header-button header-button-right" type="button" onclick="location.href='creaComp-hw7.html'">
+                    <span class="header-button-arrow">&gt;&gt;</span>
+                    <span class="header-button-title">Next</span>
+
+                </button>
+            </header>
+
+            <section class="columns">
+                <article class="column left-column">
+                    <h2>Assignment</h2>
+                    <h3>Creative Computation, oct 2026</h3>
+                    <p>
+                       Make an animated, interactive shader piece in p5.strands.
+                    </p>
+
+                    <hr>
+
+                    <h3>Medium</h3>
+                    <p>
+                        p5.js
+                    </p>
+                    <hr>
+                    
+                    <h3>Tags</h3>
+                    <p>
+                        code programming javascript 3Dmodeling 3D interactive CreativeComputation 
+                    </p>
+                </article>
+
+                <article class="column right-column">
+                    <p>
+                    Click to spawn ✰ Drag to rotate ✰  Light Follows Cursor
+                    </p>
+                    <iframe
+                        src="../iframes/shader.html"
+                        width="520"
+                        height="520"
+                        style="border: none; transform: scale(0.9); "
+                    ></iframe>
+                    
+                    <p>
+                        I like bubbles ^-^b, they're cute and colourfull and pretty and replicating them in this was not easy but I am very satisfied! One of the examples during the lecture was showing clouds in a shader and I wanted to do something with that as a basis, but thinking about it I figured this would be way more fun. The basis of making this wasn't too much trouble, but there are a lot of variables and colours and such that made finetuning a quite lengthy process. 
+                    </p>
+                    <pre><code>
+
+let shade;
+let bubbles = [];
+
+function setup() {
+  createCanvas(500, 500, WEBGL);
+  shade = buildMaterialShader(makeShade);
+}
+
+function draw() {
+  background(160, 226, 252);
+  orbitControl();
+  ambientLight(140, 180, 220);
+  noStroke();
+
+  //autorotation
+  rotateY(frameCount * 0.002);
+
+  //spawn bubbles setup
+  for (let i = bubbles.length - 1; i >= 0; i--) {
+    let b = bubbles[i];
+    // directions of movement & wobbly paths
+    b.y -= b.speed;
+    b.x = b.startX + sin(frameCount * b.wobbleSpeed + b.phase) * b.wobble;
+    b.z = b.startZ + sin(frameCount * 0.015 + b.phase) * 8;
+
+    push();
+    translate(b.x, b.y, b.z);
+
+    //shade each bubble
+    shader(shade);
+
+    // make bubble
+    fill(160, 226, 252, 140);
+    sphere(b.size, 32, 24);
+    pop();
+
+    // limit height
+    if (b.y < -height / 2 - b.size) {
+      bubbles.splice(i, 1);
+    }
+  }
+  
+}
+
+// random initilization of bubble upon click
+function mousePressed() {
+  bubbles.push({
+    // random starting point
+    y: height / 2 + random(-10, 20),
+    startX: random(-width / 2 + 30, width / 2 - 30),
+    startZ: random(-100, 100),
+
+    size: random(12, 35),
+
+    // sin-based path random initialization
+    speed: random(0.5, 1.5),
+    wobble: random(5, 25),
+    wobbleSpeed: random(0.008, 0.025),
+    phase: random(TWO_PI)
+  });
+}
+
+function makeShade() {
+  let normal = sharedVec3();
+
+  //get normal direction
+  pixelInputs.begin();
+  normal = normalize(pixelInputs.normal);
+  pixelInputs.end();
+
+  // establish base colour
+  finalColor.begin();
+  let c = finalColor.color;
+
+  // calculate how the surface faces the camera
+  let view = abs(dot(normal, [0, 0, 1]));
+
+  // rim around the edge
+  let rim = pow(1.0 - view, 3.0); // 3.0 => "thickness" of rim
+
+  // set sunlight direction based on mouse
+  let sunDir = normalize(vec3(mouseX - 250, mouseY - 250, 0.3));
+  let sunLight = max(dot(normal, sunDir), 0.0);
+
+  // sunlight highlight
+  let sunHighlight = pow(sunLight, 18.0);  // 18.0 => strength of highlight
+  let sunlight = sunLight * 0.4 + sunHighlight * 1.3; // amount of fade
+
+  // back-sunlight highlight
+  let backDir = -sunDir; 
+  let backLight = max(dot(normal, backDir), 0.0);
+  let backHighlight = pow(backLight, 3.0);   // 3.0 => strength of highlight
+
+  // colour positions on rim
+  let cyan = vec3(0.1, 1.0, 1.0);
+  let blue = vec3(0.25, 0.45, 1.0);
+  let violet = vec3(0.7, 0.25, 1.0);
+  let magenta = vec3(1.0, 0.2, 0.75);
+  let angle = atan(normal.y, normal.x);
+
+  // smoothe between colours on rim
+  let hue = 0.5 + 0.5 * sin(angle * 2.0);
+  let colorA = mix(cyan, blue, hue);
+  let colorB = mix(violet, magenta, hue);
+  let rainbow = mix(colorA, colorB, 0.5 + 0.5 * sin(angle * 3.0));
+
+  // blend with og colour
+  let rgb = mix(c.rgb, rainbow, rim * 0.95);
+
+  // sun highlights need to be within the rim, so limit where its at with a mask
+  let innerMask = smoothstep(0.1, 0.6, view);
+
+  // add highlights
+  rgb += vec3(1.0, 0.96, 0.82) * sunlight * innerMask;
+  rgb += vec3(0.75, 0.95, 1.0) * backHighlight * innerMask * 0.4;
+
+  //finalize
+  finalColor.set([clamp(rgb, 0.0, 1.0), c.a]);
+  finalColor.end();
+}
+
+                    </code></pre>
+                </article>
+            </section>
+        </div>
+
+        <aside class="floating-panel">
+            <div class="search-box">
+                <form action="../search.html" method="get">
+                    <input type="search" name="q" placeholder="Search..." aria-label="Search">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropdown-toggle" type="button" aria-expanded="false">
+                    <span>Quick Links</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+
+                <div class="dropdown-content" id="quick-links"></div>
+            </div>
+        </aside>
+    </main>
+
+    <script src="../search.js"></script>
+    <script src="../main.js"></script>
+
+</body>
+</html>

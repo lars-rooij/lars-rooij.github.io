@@ -4,10 +4,16 @@
 // gets shown in this order. new assingments should go at the top.
 const assignments = [
     {
-    title: "3 Prototypes exploring Movement",
-    description: "Create 3 materialised prototypes that explore movement, without using glue.",
-    tags: [ "3D", "physical", "material", "study", "sketch", "Prototyping"], 
-    url: "assignments/prototyping-final.html"
+        title: "Interactive Shader",
+        description: "Make an animated, interactive shader piece in p5.strands.",
+        tags: [ "code", "programming", "interactive", "3Dmodeling", "3D", "CreativeComputation"], 
+        url: "assignments/creaComp-hw6.html"
+    },
+    {
+        title: "3 Prototypes exploring Movement",
+        description: "Create 3 materialised prototypes that explore movement, without using glue.",
+        tags: [ "3D", "physical", "material", "study", "sketch", "Prototyping"], 
+        url: "assignments/prototyping-final.html"
     },   
     {
         title: "KinderEgg 3D Model",
@@ -42,7 +48,7 @@ const assignments = [
     {
         title: "Simple Sketchpad",
         description: "Using p5.js, make a simple interactive sketchpad based on input events. ",
-        tags: [ "code", "programming", "javascript", "drawing", "p5.js", "CreativeComputation"], 
+        tags: [ "code", "programming", "javascript", "drawing", "interactive", "p5.js", "CreativeComputation"], 
         url: "assignments/creaComp-hw3.html"
     },
     {

@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- p5.js 2.x supports p5.strands shader functions -->
+    <script src="https://cdn.jsdelivr.net/npm/p5@2.2.2/lib/p5.min.js"></script>
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: white;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border: 10px solid white;
+
+        }
+    </style>
+</head>
+
+<body>
+
+<script>
+
+let shade;
+let bubbles = [];
+
+function setup() {
+    createCanvas(500, 500, WEBGL);
+
+    // create the custom bubble shader
+    shade = buildMaterialShader(makeShade);
+}
+
+function makeShade() {
+    let normal = sharedVec3();
+
+    // get the normal direction of each pixel on the bubble
+    pixelInputs.begin();
+    normal = normalize(pixelInputs.normal);
+    pixelInputs.end();
+
+    // get the current color of the bubble
+    finalColor.begin();
+    let c = finalColor.color;
+
+    // calculate how much the surface faces the viewer
+    let view = abs(dot(normal, [0, 0, 1]));
+
+    // create a rainbow rim around the edge of the bubble
+    let rim = pow(1.0 - view, 3.0);
+
+    // set the light direction based on the mouse position
+    let sunDir = normalize(
+        vec3(mouseX - 250, mouseY - 250, 0.3)
+    );
+
+    // calculate the amount of sunlight hitting the surface
+    let sunLight = max(dot(normal, sunDir), 0.0);
+
+    // create a bright highlight where the sunlight hits
+    let sunHighlight = pow(sunLight, 18.0);
+
+    // combine the main sunlight and the bright highlight
+    let sunlight = sunLight * 0.4 + sunHighlight * 1.3;
+
+    // create a second light from the opposite direction
+    let backDir = -sunDir;
+    let backLight = max(dot(normal, backDir), 0.0);
+
+    // make the opposite highlight softer and more spread out
+    let backHighlight = pow(backLight, 4.0);
+
+    // define the colors used to create the rainbow effect
+    let cyan = vec3(0.1, 1.0, 1.0);
+    let blue = vec3(0.25, 0.45, 1.0);
+    let violet = vec3(0.7, 0.25, 1.0);
+    let magenta = vec3(1.0, 0.2, 0.75);
+
+    // calculate the angle of the surface normal
+    let angle = atan(normal.y, normal.x);
+
+    // use a sine wave to smoothly change the colors
+    let hue = 0.5 + 0.5 * sin(angle * 2.0);
+
+    // blend cyan and blue together
+    let colorA = mix(cyan, blue, hue);
+
+    // blend violet and magenta together
+    let colorB = mix(violet, magenta, hue);
+
+    // combine both color blends to create a rainbow
+    let rainbow = mix(
+        colorA,
+        colorB,
+        0.5 + 0.5 * sin(angle * 3.0)
+    );
+
+    // blend the rainbow colors with the original bubble color
+    let rgb = mix(c.rgb, rainbow, rim * 0.95);
+
+    // control where the light highlights appear on the bubble
+    let innerMask = smoothstep(0.1, 0.6, view);
+
+    // add the warm sunlight highlight
+    rgb += vec3(1.0, 0.96, 0.82) * sunlight * innerMask;
+
+    // add a softer blue highlight from the opposite direction
+    rgb += vec3(0.75, 0.95, 1.0)
+        * backHighlight * innerMask * 0.4;
+
+    // add a subtle white glow around the outer edge
+    rgb = mix(rgb, vec3(1.0), pow(rim, 4.0) * 0.25);
+
+    // keep color values between 0 and 1 and preserve transparency
+    finalColor.set([clamp(rgb, 0.0, 1.0), c.a]);
+    finalColor.end();
+}
+
+function draw() {
+    // set the background color
+    background(160, 226, 252);
+
+    // allow the scene to be rotated with the mouse
+    orbitControl();
+
+    // add ambient lighting to the scene
+    ambientLight(140, 180, 220);
+
+    noStroke();
+
+    // autorotation
+    rotateY(frameCount * 0.002);
+
+    // update and display all bubbles
+    for (let i = bubbles.length - 1; i >= 0; i--) {
+        let b = bubbles[i];
+
+        // move bubbles upwards
+        b.y -= b.speed;
+
+        // create a wobbly horizontal path
+        b.x = b.startX
+            + sin(frameCount * b.wobbleSpeed + b.phase) * b.wobble;
+
+        // add a small movement in depth
+        b.z = b.startZ
+            + sin(frameCount * 0.015 + b.phase) * 8;
+
+        push();
+
+        // move to the bubble's position
+        translate(b.x, b.y, b.z);
+
+        // apply the custom shader
+        shader(shade);
+
+        // set the bubble's base color and transparency
+        fill(160, 226, 252, 140);
+
+        // draw the bubble
+        sphere(b.size, 32, 24);
+
+        pop();
+
+        // remove bubbles once they move off the top
+        if (b.y < -height / 2 - b.size) {
+            bubbles.splice(i, 1);
+        }
+    }
+}
+
+// create a new bubble when the mouse is clicked
+function mousePressed() {
+    bubbles.push({
+        // random starting position
+        y: height / 2 + random(-10, 20),
+        startX: random(-width / 2 + 30, width / 2 - 30),
+        startZ: random(-100, 100),
+
+        // random bubble size
+        size: random(12, 35),
+
+        // random movement speed and wobble
+        speed: random(0.5, 1.5),
+        wobble: random(5, 25),
+        wobbleSpeed: random(0.008, 0.025),
+
+        // random starting phase for the sine waves
+        phase: random(TWO_PI)
+    });
+}
+
+</script>
+
+</body>
+</html>
