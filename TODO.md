@@ -21,7 +21,7 @@ Current pages in active progress:
 - courses with incomplete assignment cycle: strats, creacomp, prototyping
 
 --- 
-Last pushed: 20 Oct 2026. 
+Last pushed: 26 Oct 2026. 
 sometime it might be nice to make a popup for clicked-on-images. 
 
 ---
