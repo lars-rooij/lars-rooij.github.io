@@ -15,14 +15,13 @@ Current pages in active progress:
 - prototyping 4, 75 experiments.
 	- add pics every week.
 - prototying final, exploring movement
-	- **add gif of contained wind in action**
-	- **add/up-date peer feedback section on itteration 2**
-	- add next step when its occured
-- courses with incomplete assignment cycle: strats, creacomp, prototyping
+	- add itteration 3
+- courses with incomplete assignment cycle: strats, creacomp,
 
 --- 
-Last pushed: 26 Oct 2026. 
-sometime it might be nice to make a popup for clicked-on-images. 
+Last commited: 27 Oct 2026. 
+- need to add second strats essay.
+- sometime it might be nice to make a popup for clicked-on-images. 
 
 ---
 Structuremap:
