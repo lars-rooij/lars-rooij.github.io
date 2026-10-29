@@ -16,11 +16,10 @@ Current pages in active progress:
 	- add pics every week.
 - prototying final, exploring movement
 	- add itteration 3
-- courses with incomplete assignment cycle: strats, creacomp,
+- courses with incomplete assignment cycle: creacomp
 
 --- 
 Last commited: 27 Oct 2026. 
-- need to add second strats essay.
 - sometime it might be nice to make a popup for clicked-on-images. 
 
 ---
