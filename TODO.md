@@ -9,17 +9,15 @@ Checklist new pages
 - add the entry to search.js. title, tag, and descripe appropriatelly. 
 ---
 Current pages in active progress:
-- prototyping 1, 105 pictures. 
-	- add pics & catagorize them every week.
-	- add catagory to week 1
 - prototyping 4, 75 experiments.
 	- add pics every week.
 - prototying final, exploring movement
-	- add itteration 3
 - courses with incomplete assignment cycle: creacomp
 
 --- 
-Last commited: 27 Oct 2026. 
+Last commited: 2 Nov 2026. 
+- add creacomp project page1
+- add final touches for prototyping !
 - sometime it might be nice to make a popup for clicked-on-images. 
 
 ---
