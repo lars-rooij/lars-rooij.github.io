@@ -4,6 +4,12 @@
 // gets shown in this order. new assingments should go at the top.
 const assignments = [
     {
+        title: "Creativity Tool",
+        description: " Create a tool for being creative with!",
+        tags: [ "code", "programming", "interactive", "p5.js", "CreativeComputation"], 
+        url: "assignments/creaComp-project1.html"
+    },
+    {
         title: "The limits of Recognition",
         description: "Develop your own narrative for a sixth strategy regarding the creation of art.",
         tags: [ "writing", "essay", "StrategiesInPerformingArts"], 
