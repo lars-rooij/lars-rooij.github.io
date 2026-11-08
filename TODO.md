@@ -10,6 +10,7 @@ Checklist new pages
 ---
 Current pages in active progress:
 - creaComp-project1 needs the assignment added once its finished (which also means iframes => project1.html)
+- ArtCreat-2 & ArtCreat-3 need their assignment added upon completion. also their title & href changed. also they should be added to the search page. 
 - courses with incomplete assignment cycle: creacomp
 
 --- 

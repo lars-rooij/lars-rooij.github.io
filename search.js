@@ -4,6 +4,12 @@
 // gets shown in this order. new assingments should go at the top.
 const assignments = [
     {
+        title: "Permanent Modifications",
+        description: "Pick a specific element of creatureness, find one or more examples of artificial creatures that express, illustrate or question this dimension",
+        tags: [ "writing", "ArtificialCreatures"], 
+        url: "assignments/ArtCreat-1.html"
+    },
+    {
         title: "Creativity Tool",
         description: " Create a tool for being creative with!",
         tags: [ "code", "programming", "interactive", "p5.js", "CreativeComputation"], 
