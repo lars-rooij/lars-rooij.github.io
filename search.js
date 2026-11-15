@@ -4,17 +4,23 @@
 // gets shown in this order. new assingments should go at the top.
 const assignments = [
     {
+        title: "Fetishist's Approach",
+        description: "Pick one of your fellow student assignment 1 blogs  that inspired you most. Write a short review/blog/reflection why.",
+        tags: [ "writing", "ArtificialCreatures"], 
+        url: "assignments/ArtCreat-2.html"
+    },
+    {
         title: "Permanent Modifications",
         description: "Pick a specific element of creatureness, find one or more examples of artificial creatures that express, illustrate or question this dimension",
         tags: [ "writing", "ArtificialCreatures"], 
         url: "assignments/ArtCreat-1.html"
     },
-    {
-        title: "Creativity Tool",
-        description: " Create a tool for being creative with!",
-        tags: [ "code", "programming", "interactive", "p5.js", "CreativeComputation"], 
-        url: "assignments/creaComp-project1.html"
-    },
+    // {
+    //     title: "Creativity Tool",
+    //     description: " Create a tool for being creative with!",
+    //     tags: [ "code", "programming", "interactive", "p5.js", "CreativeComputation"], 
+    //     url: "assignments/creaComp-project1.html"
+    // },
     {
         title: "The limits of Recognition",
         description: "Develop your own narrative for a sixth strategy regarding the creation of art.",
